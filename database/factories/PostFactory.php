@@ -15,14 +15,12 @@ class PostFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition(): array
-    {
-        return [
-            //
-            'body'              =>fake()->paragraphs($nb = 8, $asText = true),
-            'meta_description'  =>fake()->sentence($nbWords = 6, $variableNbWords = true),
-            'meta_keywords'     => implode(',', fake()->words($nb = 3, $asText = false)),
-            'active'            => true,
-
-        ];
-    }
+{
+	return [
+		'body'             => fake()->paragraphs($nb = 8, $asText = true),
+		'meta_description' => fake()->sentence($nbWords = 6, $variableNbWords = true),
+		'meta_keywords'    => implode(',', fake()->words($nb = 3, $asText = false)),
+		'active'           => true,
+	];
+}
 }
