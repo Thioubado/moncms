@@ -14,6 +14,7 @@ class UserFactory extends Factory
     /**
      * The current password being used by the factory.
      */
+    public static $users = [];
     protected static ?string $password;
 
     /**
@@ -23,12 +24,13 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        [$name, $email] = $this->uniqueUserNameAndEmail();
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'valid' => true,
         ];
     }
 
@@ -41,4 +43,29 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+
+    public function uniqueUserNameAndEmail() {
+        static $names;
+    
+        $name = fake('fr_FR')->lastname();
+        // $name = $this->fakeFakes();
+        if (!isset($names[$name])) {
+          $names[$name] = 1;
+          self::$users[] = $pseudo = $name;
+        } else {
+          $names[$name]++;
+          $pseudo = self::$users[] = $name . '-' . ($names[$name] - 1);
+        }
+        $email = strtolower(str_replace(' ', '_', $pseudo) ) . '@example.com';
+    
+        return [$name, $email];
+      }
+    
+    // private function fakeFakes() {
+    //   static $n  = 0;
+    //   $fakeFakes = ['a', 'b', 'a', 'b', 'd', 'a', 'e'];
+    
+    //   return $fakeFakes[$n++ % count($fakeFakes)];
+    // }
 }
